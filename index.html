@@ -150,8 +150,25 @@
         unityInstance.Module.WebXR.toggleAR();
       }, false);
       enterVRButton.addEventListener('click', function (event) {
-        unityInstance.Module.WebXR.toggleVR();
-      }, false);
+  // iOS precisa pedir permissão primeiro
+  if (typeof DeviceMotionEvent !== "undefined" && typeof DeviceMotionEvent.requestPermission === "function") {
+    DeviceMotionEvent.requestPermission()
+      .then(response => {
+        if (response === "granted") {
+          unityInstance.Module.WebXR.toggleVR();
+        } else {
+          alert("Permissão de movimento negada. Ative nas configurações do Safari.");
+        }
+      })
+      .catch(err => {
+        console.error("Erro ao pedir permissão de movimento:", err);
+        unityInstance.Module.WebXR.toggleVR(); // tenta mesmo assim
+      });
+  } else {
+    // Android ou navegadores que não exigem permissão explícita
+    unityInstance.Module.WebXR.toggleVR();
+  }
+}, false);
     </script>
   </body>
 </html>
