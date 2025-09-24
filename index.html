@@ -11,8 +11,9 @@
     <style>
       /* Novo estilo para centralizar e ajustar o botão VR */
       #entervr {
+        opacity: 0;
         position: absolute;
-        top: 58%; /* um pouco abaixo do centro */
+        top: 62%; /* um pouco abaixo do centro */
         left: 50%;
         transform: translate(-50%, -50%);
         padding: 12px 20px;
@@ -66,7 +67,7 @@
     </div>
 
     <!-- Botão VR agora está fora do footer -->
-    <button id="entervr" value="Enter VR" disabled>VR</button>
+    <button id="entervr" value="Enter VR" disabled>Enter VR</button>
 
     <script>
       var buildUrl = "Build";
@@ -102,6 +103,7 @@
 
           // Mostra o botão VR só depois que a Unity carregar
           document.getElementById("entervr").style.display = "block";
+          document.getElementById("entervr").style.opacity = 1;          
 
           if (fullscreenButton) {
             fullscreenButton.onclick = () => {
