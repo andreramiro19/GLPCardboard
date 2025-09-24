@@ -12,7 +12,7 @@
       /* Novo estilo para centralizar e ajustar o botão VR */
       #entervr {
         position: absolute;
-        top: 58%; /* agora um pouco abaixo do centro */
+        top: 58%; /* um pouco abaixo do centro */
         left: 50%;
         transform: translate(-50%, -50%);
         padding: 12px 20px;
@@ -24,25 +24,27 @@
         border-radius: 12px;
         cursor: pointer;
         box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
-    
-        /* Garante que o texto quebre certinho dentro do botão */
+
+        /* texto centralizado */
         white-space: normal;
-        text-align: center;
+        text-align: center;   
         line-height: 1.2;
         min-width: 120px;
+
+        /* botão escondido até a Unity carregar */
+        display: none;
       }
-    
+
       #entervr:disabled {
         background-color: #888;
         cursor: not-allowed;
       }
-    
+
       /* Esconde o botão AR e o footer padrão */
       #enterar, #unity-footer {
         display: none !important;
       }
     </style>
-    
   </head>
   <body>
     <div id="unity-container">
@@ -57,7 +59,6 @@
       </div>
       <div id="unity-footer">
         <div id="unity-webgl-logo"></div>
-        <!-- botão VR removido daqui -->
         <button id="enterar" value="Enter AR" disabled>AR</button>
         <div id="unity-webxr-link">Using <a href="https://github.com/De-Panther/unity-webxr-export" target="_blank" title="WebXR Export">WebXR Export</a></div>
         <div id="unity-build-title">Cardboard GLP</div>
@@ -98,6 +99,10 @@
         }).then((instance) => {
           unityInstance = instance;
           loadingBar.style.display = "none";
+
+          // Mostra o botão VR só depois que a Unity carregar
+          document.getElementById("entervr").style.display = "block";
+
           if (fullscreenButton) {
             fullscreenButton.onclick = () => {
               unityInstance.SetFullscreen(1);
