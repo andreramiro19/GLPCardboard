@@ -8,6 +8,42 @@
     <meta name="description" content="">
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
+
+    <style>
+      /* Novo estilo para centralizar e ajustar o botão VR */
+      #entervr {
+        position: absolute;
+        top: 58%; /* agora um pouco abaixo do centro */
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 12px 20px;
+        font-size: 18px;
+        font-weight: bold;
+        background-color: #0078d7;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+    
+        /* Garante que o texto quebre certinho dentro do botão */
+        white-space: normal;
+        text-align: center;
+        line-height: 1.2;
+        min-width: 120px;
+      }
+    
+      #entervr:disabled {
+        background-color: #888;
+        cursor: not-allowed;
+      }
+    
+      /* Esconde o botão AR e o footer padrão */
+      #enterar, #unity-footer {
+        display: none !important;
+      }
+    </style>
+    
   </head>
   <body>
     <div id="unity-container">
@@ -20,14 +56,11 @@
           <div id="unity-progress-bar-full"></div>
         </div>
       </div>
-      <div id="unity-footer">
-        <div id="unity-webgl-logo"></div>
-        <button id="entervr" value="Enter VR" disabled>VR</button>
-        <button id="enterar" value="Enter AR" disabled>AR</button>
-        <div id="unity-webxr-link">Using <a href="https://github.com/De-Panther/unity-webxr-export" target="_blank" title="WebXR Export">WebXR Export</a></div>
-        <div id="unity-build-title">Cardboard GLP</div>
-      </div>
+
+      <!-- Botão VR agora está fora do footer -->
+      <button id="entervr" value="Enter VR" disabled>Enter VR</button>
     </div>
+
     <script>
       var buildUrl = "Build";
       var loaderUrl = buildUrl + "/GLPCardboard.loader.js";
@@ -46,10 +79,8 @@
       var canvasContainer = document.querySelector("#unity-canvas-container");
       var loadingBar = document.querySelector("#unity-loading-bar");
       var progressBarFull = document.querySelector("#unity-progress-bar-full");
-      var fullscreenButton = document.querySelector("#unity-fullscreen-button");
       var unityInstance = null;
       
-
       loadingBar.style.display = "block";
 
       var script = document.createElement("script");
@@ -60,31 +91,18 @@
         }).then((instance) => {
           unityInstance = instance;
           loadingBar.style.display = "none";
-          if (fullscreenButton)
-          {
-            fullscreenButton.onclick = () => {
-              unityInstance.SetFullscreen(1);
-            };
-          }
         }).catch((message) => {
           alert(message);
         });
       };
       document.body.appendChild(script);
 
-      let enterARButton = document.getElementById('enterar');
       let enterVRButton = document.getElementById('entervr');
 
-      document.addEventListener('onARSupportedCheck', function (event) {
-        enterARButton.disabled = !event.detail.supported;
-      }, false);
       document.addEventListener('onVRSupportedCheck', function (event) {
         enterVRButton.disabled = !event.detail.supported;
       }, false);
 
-      enterARButton.addEventListener('click', function (event) {
-        unityInstance.Module.WebXR.toggleAR();
-      }, false);
       enterVRButton.addEventListener('click', function (event) {
         unityInstance.Module.WebXR.toggleVR();
       }, false);
